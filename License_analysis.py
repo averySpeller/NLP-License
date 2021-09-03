@@ -27,7 +27,15 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 import gensim
 import numpy as np 
 import argparse
-import nltk
+import ssl
+
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
 nltk.download('punkt')
 
 #simple function to store any line starting with "copyright"
