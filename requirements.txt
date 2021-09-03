@@ -1,0 +1,7 @@
+argparse
+gensim
+nltk	
+requests	
+scikit-learn
+scipy==1.6.3	
+zipfile2
