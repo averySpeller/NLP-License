@@ -27,13 +27,15 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 import gensim
 import numpy as np 
 import argparse
+import nltk
+nltk.download('punkt')
 
 #simple function to store any line starting with "copyright"
 def find_copyright(filename):
     # Using readline()
     copyright = ''
     try:
-        file1 = open(filename, 'r')
+        file1 = open(filename, 'r', encoding='utf-8')
     except:
         return('')
     while True:
@@ -50,7 +52,7 @@ def find_copyright(filename):
 #get licence stated in from PKG_INFO 
 def get_license(filename):
     license = ''
-    file1 = open(filename, 'r')
+    file1 = open(filename, 'r', encoding='utf-8')
     
     while True:
         line = file1.readline()
@@ -70,6 +72,8 @@ def detect_license(file1):
     max_similarity = 0
     license_similarity = {}
     license_detected = {}
+
+    print("DETECT LICENSE!!!!")
     with os.scandir('reference/') as references:
         for reference in references:
             if not reference.name.startswith("."):
@@ -78,13 +82,14 @@ def detect_license(file1):
                 #recording docs(sentences) for first file
                 file_docs = []
                 try:
-                    with open (file1) as f:
+                    with open (file1, encoding='utf-8') as f:
                         tokens = sent_tokenize(f.read())
-                except:
+                except Exception as ex:
+                    print(ex)
                     license_detected['UNKNOWN'] = 0
                     return(license_detected)
 
-                with open (file1) as f:
+                with open (file1, encoding='utf-8') as f:
                     tokens = sent_tokenize(f.read())
                     for line in tokens:
                         file_docs.append(line)
@@ -106,7 +111,7 @@ def detect_license(file1):
                     sims = 0
                 file2_docs = []
                 #analyzing reference material
-                with open (reference_file) as f:
+                with open (reference_file, encoding='utf-8') as f:
                     tokens = sent_tokenize(f.read())
                     for line in tokens:
                         file2_docs.append(line)
@@ -237,7 +242,7 @@ for s in sources:
     for file in check_license_files:
         try:
             print("Checking: "+file_name+"/"+file)
-            tarfile.open(compressed_file_name).extract(file_name+"/"+file)
+            tarfile.open(compressed_file_name, encoding='utf-8').extract(file_name+"/"+file)
         except Exception as ex:
             print(ex)
             license_similarity = 0
@@ -254,11 +259,11 @@ for s in sources:
 
 # look for PKG-INFO
     try:
-        tarfile.open(compressed_file_name).extract(file_name+"/PKG-INFO")
+        tarfile.open(compressed_file_name, encoding='utf-8').extract(file_name+"/PKG-INFO")
     except Exception as ex:
         print(ex)
         try:
-            tarfile.open(compressed_file_name).extract(file_name+"/PKG-INFO.txt")
+            tarfile.open(compressed_file_name, encoding='utf-8').extract(file_name+"/PKG-INFO.txt")
         except Exception as ex:
             print(ex)
         else:
@@ -273,7 +278,7 @@ for s in sources:
     if PKG_INFO_found == False and LICENSE_found == False:
         print("UNKNOWN LICENSE")
         try:
-            with open("./unknown/"+os.path.basename(s["url"]), "wb") as f:
+            with open("./unknown/"+os.path.basename(s["url"]), "wb", encoding='utf-8') as f:
                 f.write(r.content)
         except Exception as ex:
             print(ex)
@@ -290,7 +295,7 @@ for s in sources:
     os.remove(compressed_file_name)
 
 #write json
-with open(project+'_license.json', 'w') as outfile:
+with open(project+'_license.json', 'w', encoding='utf-8') as outfile:
     json.dump(data, outfile)
 
 #write CSV
