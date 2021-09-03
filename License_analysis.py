@@ -1,12 +1,20 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Author: Avery Speller
+# Use: Workshop Sep, 2021
+# 
+# This project has been created by myself for the purpose 
+# of demonstrating the capabilities of the ActiveState Platform.
+# I am not a professional developer.
+#
 # Break down:
 # 
 # - authenticate
 # - get ingredient name and version
-# - download file
-# - find license file
-# - determine which license it is closest to
-# - find copyright holder
-#
+# - download source files
+# - find license text
+# - return most similar license
+# - find copyright holders
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 from pathlib import Path
 import requests
