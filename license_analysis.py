@@ -238,7 +238,8 @@ for s in sources:
     PKG_INFO_found = False
     
     print("\n~~~~~~~~~{}: {} {}~~~~~~~~~~".format(count,package_name,package_version))
-
+    if not os.path.exists('workdir'):
+        os.makedirs('workdir')
 # download zip files
     r = requests.get(url=s["url"],headers=headers)
     with open(os.path.basename(s["url"]), "wb") as f:
@@ -309,6 +310,7 @@ for s in sources:
     ## Removing files created
     shutil.rmtree(file_name)
     os.remove(compressed_file_name)
+    os.rmdir(folder_path)
 
 #write json
 with open(project+'_license.json', 'w', encoding='utf-8') as outfile:
